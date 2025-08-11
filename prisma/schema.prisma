@@ -1,0 +1,103 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  binaryTargets = ["native", "debian-openssl-1.1.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  TEACHER  
+  STUDENT
+}
+
+model User {
+  id        String   @id @default(cuid())
+  name      String
+  email     String   @unique
+  password  String
+  role      Role     @default(STUDENT)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  teachingClasses Class[] @relation("TeacherClasses")
+  courses         Course[]
+  discussions     Discussion[]
+  reports         Report[]
+
+  @@map("users")
+}
+
+model Class {
+  id          String   @id @default(cuid())
+  name        String
+  description String?
+  teacherId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  teacher User     @relation("TeacherClasses", fields: [teacherId], references: [id])
+  courses Course[]
+
+  @@map("classes")
+}
+
+model Course {
+  id          String   @id @default(cuid())
+  title       String
+  description String?
+  classId     String
+  teacherId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  class       Class        @relation(fields: [classId], references: [id])
+  teacher     User         @relation(fields: [teacherId], references: [id])
+  discussions Discussion[]
+  reports     Report[]
+
+  @@map("courses")
+}
+
+model Discussion {
+  id       String  @id @default(cuid())
+  courseId String
+  userId   String
+  message  String
+  parentId String?
+  createdAt DateTime @default(now())
+
+  // Relations
+  course Course      @relation(fields: [courseId], references: [id])
+  user   User        @relation(fields: [userId], references: [id])
+  parent Discussion? @relation("DiscussionReplies", fields: [parentId], references: [id])
+  replies Discussion[] @relation("DiscussionReplies")
+
+  @@map("discussions")
+}
+
+model Report {
+  id           String   @id @default(cuid())
+  courseId     String
+  studentId    String
+  progress     Float    @default(0.0)
+  lastActivity DateTime @default(now())
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relations
+  course  Course @relation(fields: [courseId], references: [id])
+  student User   @relation(fields: [studentId], references: [id])
+
+  @@unique([courseId, studentId])
+  @@map("reports")
+}
