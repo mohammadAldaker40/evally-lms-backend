@@ -1,0 +1,90 @@
+import { CoursesService } from './courses.service';
+import { CreateCourseDto } from './dto/create-course.dto';
+export declare class CoursesController {
+    private readonly coursesService;
+    constructor(coursesService: CoursesService);
+    create(req: any, createCourseDto: CreateCourseDto): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        price: number;
+        level: string | null;
+        category: string | null;
+        thumbnail: string | null;
+        status: import(".prisma/client").$Enums.CourseStatus;
+        classId: string | null;
+        instructorId: string;
+    }>;
+    findAll(): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        price: number;
+        level: string | null;
+        category: string | null;
+        thumbnail: string | null;
+        status: import(".prisma/client").$Enums.CourseStatus;
+        classId: string | null;
+        instructorId: string;
+    }[]>;
+    findMyCourses(req: any): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        price: number;
+        level: string | null;
+        category: string | null;
+        thumbnail: string | null;
+        status: import(".prisma/client").$Enums.CourseStatus;
+        classId: string | null;
+        instructorId: string;
+    }[]>;
+    findOne(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        price: number;
+        level: string | null;
+        category: string | null;
+        thumbnail: string | null;
+        status: import(".prisma/client").$Enums.CourseStatus;
+        classId: string | null;
+        instructorId: string;
+    }>;
+    update(id: string, updateCourseDto: any): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        price: number;
+        level: string | null;
+        category: string | null;
+        thumbnail: string | null;
+        status: import(".prisma/client").$Enums.CourseStatus;
+        classId: string | null;
+        instructorId: string;
+    }>;
+    remove(id: string): Promise<{
+        id: string;
+        createdAt: Date;
+        updatedAt: Date;
+        title: string;
+        description: string | null;
+        price: number;
+        level: string | null;
+        category: string | null;
+        thumbnail: string | null;
+        status: import(".prisma/client").$Enums.CourseStatus;
+        classId: string | null;
+        instructorId: string;
+    }>;
+}
